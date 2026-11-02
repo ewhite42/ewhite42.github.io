@@ -1,0 +1,93 @@
+<html>
+
+<head>
+<title>Analysing GBT Cyclic Spectroscopy Data</title>
+<link rel="icon" type="image/x-icon" href="images/green-alien-clipart.png">
+<style>
+BODY {background: white;}
+A:link {text-decoration: none}
+A:visited {text-decoration: none}
+A:hover {color: #ff9900;}
+</style>
+</head>
+
+<body topmargin="0" leftmargin="0" link="#299c39" vlink="#299c39" alink="#299c39">
+
+<table border="0" cellspacing="0" cellpadding="0" width="980">
+  <tr>
+    <td width="200" height="100%"  bgcolor="#000000" valign="top"><p
+    align="center"><br><img src="images/green-alien-clipart.png"
+    alt="Green alien" width="200" border="0"><br>
+    <br><br><br><br><br><br>
+    <table border="1" bgcolor="00ff00" width="90%" height="100%" cellpadding="6" cellspacing="1" align="center" valign="center">
+      <tr>
+        <td width="100%" align="center"><a href="wiki.html"><font face="Arial" size="5" color="#000000">Wiki Home</font></a></td>
+      </tr>
+      <tr>
+        <td width="100%" align="center"><a href="cyclostationary.html"><font face="Arial" size="5" color="#000000">Cyclostationarity</font></a></td>
+      </tr>
+      <tr>
+        <td width="100%" align="center"><a href="blog.html"><font face="Arial" size="5" color="#000000">Artificial DM Search</font></a></td>
+      </tr>
+      <tr>
+        <td width="100%" align="center"><a href="blog.html"><font face="Arial" size="5" color="#000000">Rubin Nongravs</font></a></td>
+      </tr>
+      <tr>
+        <td width="100%" align="center"><a href="blog.html"><font face="Arial" size="5" color="#000000">Dark Comets</font></a></td>
+      </tr>
+
+    </table>
+    </td>
+
+
+    <td valign="top" align="left" width="900" bgcolor="#FFFFFF"><img src="images/header.png"
+    width="900"><p>&nbsp;</p>
+
+    <div align="center"><center><table border="0" width="800">
+
+      <tr>
+      <td align="center"><H1>Analysing GBT Cyclic Spectroscopy Data</H1></td>
+      </tr>
+
+      <tr>
+        
+        <td width="1000" bgcolor="#FFFFFF">
+        <p>
+        Here, I will describe the steps needed to analyze NANOGrav pulsar observations taken with the GBT's Cyclic Spectroscopy backend.<br><br>
+
+        <ul>
+            <li style="margin-bottom: 15px;">First, locate the data. On a GBT machine like Planck, go to the directory: /stor/gbtdata/. Then, look in any one of the directories beginning with: AGBT24B_427_* in the CYCSPEC folder. Data from each bank can be found in folders A-H (the data in each of these directories corresponds to a different frequency range; later letters seem to have lower frequencies (not sure if this is true across the board or just for the data I was looking at, though).</li>
+            <li style="margin-bottom: 15px;">Copy the fits files from your desired folder to your working directory.</li>
+            <li style="margin-bottom: 15px;">Combine these fits files into one large fits file for easier analysis using psradd. Commands take the following form: <pre>psradd -o [output fits name] [prefix of input fits files]*fits</pre></li>
+            <li style="margin-bottom: 15px;">Once you have your new fits file, you can do some quick checks to make sure things look reasonable so far; check the pulse profile to see if you get a reasonable SNR using: <pre>pav -DFTp [fitsname.fits]</pre> and check the dynamic spectrum using: <pre>pav -j [fitsname.fits]</pre></li>
+            <li>Now we want to prepare a dynamic spectrum file so we can do some analysis using Daniel Reardon's <a href="https://github.com/danielreardon/scintools"><font color="#004aad"><span style="text-decoration: underline;">scintools</span></font></a> package. Jacob Turner provided some helpful scripts for this! Use the script in: <pre>/home/scratch/jturner/get_scint_files_temp_match_filename.py</pre> (on the GBO machines) to create a dynamic spectrum numpy array, saved as a pickle file. Then, convert that pickle file to a scintools-compatible format using the script: <pre>/home/scratch/emwhite/cycspec/make_scintools_dynspec.py</pre> (also written by Jacob Turner, I just copied it into my area). You can run these scripts as follows:</li>
+            <ul>
+              <li style="margin-bottom: 15px;"><pre>python get_scint_files_temp_match_filename.py [fitsname.fits]</pre></li>
+              <li style="margin-bottom: 15px;"><pre>python make_scintools_dynspec.py [picklename.pickle]</pre> (note the output is a .txt file)</li>
+            </ul>
+
+            <li>We can now plot both the dynamic and secondary spectra using scintools! I have written a simple script to do this, here: <pre>/home/scratch/emwhite/cycspec/plot_dynspec.py</pre> Just replace the directory path with that corresponding to your own files and it should work.</li>
+        </ul>
+
+<br>
+And there you have it, a pretty straightforward way to get some initial information out of your data. Next I'd like to figure out how to splice the output from multiple frequency banks together. Thanks to Jacob Turner for his troubleshooting help, which made this set of instructions possible! 
+
+        </p></td></tr>  
+
+      <tr>
+      <td><p><em>by <a href="index.html"><font color="#004aad"><span style="text-decoration: underline;">Ellie White</span></font></a></em><br><br><br><br> <br><br> <br><br> <br><br> <br><br> <br><br></p></td>
+      </tr>     
+
+        </p>
+        </td>
+      </tr>
+
+
+    </table>
+    </center></div><div align="center"><center><table border="0" width="620">
+    </table>
+    </center></div></td>
+  </tr>
+</table>
+</body>
+</html>
